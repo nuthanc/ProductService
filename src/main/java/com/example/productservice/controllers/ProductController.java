@@ -1,12 +1,10 @@
 package com.example.productservice.controllers;
 
+import com.example.productservice.models.Category;
 import com.example.productservice.models.Product;
 import com.example.productservice.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,12 +21,35 @@ public class ProductController {
     }
 
     @GetMapping()
-    public List<String> getAllProducts() {
-        return Arrays.asList("Washing Machine", "TV", "Sofa");
+    public List<Product> getProducts() {
+        return productService.getProducts();
     }
 
     @GetMapping(path = "/{id}")
     public Product getProduct(@PathVariable("id") Long id) {
-       return  productService.getProduct(id);
+       return productService.getProduct(id);
     }
+
+
+//    @PostMapping()
+//    public Product addProduct(@RequestBody body) {
+//        return productService.getProduct(id);
+//    }
+
+    @PatchMapping("/{id}")
+    public Product replaceProduct(@PathVariable("id") Long id) {
+        Product product = new Product();
+        product.setTitle("Godrej Beer");
+        product.setId(id);
+        product.setDescription("Fantastic Beer");
+        product.setImageUrl("https://thumbs.dreamstime.com/b/bottles-famous-global-beer-brands-poznan-pol-mar-including-heineken-becks-bud-miller-corona-stella-artois-san-miguel-143170474.jpg");
+        return productService.replaceProduct(id, product);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable("id") Long id) {
+
+    }
+
+
 }
